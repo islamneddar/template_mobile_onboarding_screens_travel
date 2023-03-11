@@ -1,3 +1,7 @@
+import {Dimensions} from 'react-native';
+
+const {width, height} = Dimensions.get('window');
+
 export const COLORS = {
   black: '#1E1F20',
   white: '#FFFFFF',
@@ -27,42 +31,42 @@ export const SIZES = {
 
 export const FONTS = {
   h1: {
-    fontFamily: 'Roboto-Black',
+    fontFamily: 'Roboto-Black.ttf',
     fontSize: SIZES.h1,
     lineHeight: 36,
   },
   h2: {
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Bold.ttf',
     fontSize: SIZES.h2,
     lineHeight: 30,
   },
   h3: {
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Bold.ttf',
     fontSize: SIZES.h3,
     lineHeight: 22,
   },
   h4: {
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Bold.ttf',
     fontSize: SIZES.h4,
     lineHeight: 22,
   },
   body1: {
-    fontFamily: 'Roboto-Black',
+    fontFamily: 'Roboto-Black.ttf',
     fontSize: SIZES.body1,
     lineHeight: 36,
   },
   body2: {
-    fontFamily: 'Roboto-Black',
+    fontFamily: 'Roboto-Black.ttf',
     fontSize: SIZES.body2,
     lineHeight: 30,
   },
   body3: {
-    fontFamily: 'Roboto-Black',
+    fontFamily: 'Roboto-Black.ttf',
     fontSize: SIZES.body3,
     lineHeight: 22,
   },
   body4: {
-    fontFamily: 'Roboto-Black',
+    fontFamily: 'Roboto-Black.ttf',
     fontSize: SIZES.body4,
     lineHeight: 22,
   },
