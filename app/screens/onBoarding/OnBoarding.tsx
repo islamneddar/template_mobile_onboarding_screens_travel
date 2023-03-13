@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   Animated,
   Image,
@@ -37,7 +37,19 @@ const dummyData = [
 ];
 
 const OnBoarding = () => {
-  const scrollX = new Animated.Value(0);
+  const [completed, setCompleted] = React.useState(false);
+
+  const scrollX = useMemo(() => new Animated.Value(0), []);
+
+  useEffect(() => {
+    const scrollXListener = scrollX.addListener(({value}) => {
+      if (Math.floor(value / SIZES.width) === dummyData.length - 1) {
+        setCompleted(true);
+      }
+    });
+
+    return () => scrollX.removeListener(scrollXListener);
+  }, [scrollX]);
 
   const renderContent = () => {
     return (
@@ -72,11 +84,6 @@ const OnBoarding = () => {
               }
               <Text style={styles.descriptionStyle}>{item.description}</Text>
             </View>
-            <TouchableOpacity
-              style={styles.skipButton}
-              onPress={() => console.log('skip')}>
-              <Text>Skip</Text>
-            </TouchableOpacity>
           </View>
         ))}
       </Animated.ScrollView>
@@ -120,6 +127,13 @@ const OnBoarding = () => {
     <SafeAreaView style={styles.container}>
       <View>{renderContent()}</View>
       <View style={styles.dotsContainer}>{renderDots()}</View>
+      <TouchableOpacity
+        style={styles.skipButton}
+        onPress={() => console.log('skip')}>
+        <Text style={styles.textSkipButton}>
+          {completed ? "Let's Go" : 'Skip'}
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -177,7 +191,7 @@ const styles = StyleSheet.create({
   },
   skipButton: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 30,
     right: 0,
     width: 150,
     height: 60,
@@ -186,6 +200,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderBottomLeftRadius: 30,
     backgroundColor: COLORS.blue,
+  },
+  textSkipButton: {
+    ...FONTS.h1,
+    color: COLORS.white,
   },
 });
 
