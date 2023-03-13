@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants/theme';
@@ -71,6 +72,11 @@ const OnBoarding = () => {
               }
               <Text style={styles.descriptionStyle}>{item.description}</Text>
             </View>
+            <TouchableOpacity
+              style={styles.skipButton}
+              onPress={() => console.log('skip')}>
+              <Text>Skip</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </Animated.ScrollView>
@@ -168,6 +174,18 @@ const styles = StyleSheet.create({
   dotsContainer: {
     position: 'absolute',
     bottom: SIZES.height > 700 ? '30%' : '20%',
+  },
+  skipButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 150,
+    height: 60,
+    justifyContent: 'center',
+    paddingLeft: 20,
+    borderTopLeftRadius: 30,
+    borderBottomLeftRadius: 30,
+    backgroundColor: COLORS.blue,
   },
 });
 
