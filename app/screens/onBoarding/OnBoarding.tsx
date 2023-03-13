@@ -36,6 +36,8 @@ const dummyData = [
 ];
 
 const OnBoarding = () => {
+  const scrollX = new Animated.Value(0);
+
   const renderContent = () => {
     return (
       <Animated.ScrollView
@@ -43,7 +45,13 @@ const OnBoarding = () => {
         pagingEnabled
         scrollEnabled
         snapToAlignment={'center'}
-        showsHorizontalScrollIndicator={false}>
+        showsHorizontalScrollIndicator={false}
+        decelerationRate={0}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: false},
+        )}>
         {dummyData.map((item, index) => (
           <View key={index} style={styles.containerOnboardingImage}>
             <View style={styles.viewImageOnBoarding}>
@@ -54,7 +62,13 @@ const OnBoarding = () => {
               />
             </View>
             <View style={styles.containerTitleDescription}>
+              {
+                // the title goes here
+              }
               <Text style={styles.titleStyle}>{item.title}</Text>
+              {
+                // the descreption goes here
+              }
               <Text style={styles.descriptionStyle}>{item.description}</Text>
             </View>
           </View>
@@ -63,8 +77,44 @@ const OnBoarding = () => {
     );
   };
 
+  const DotView = Animated.createAnimatedComponent(View);
+
+  const renderDots = () => {
+    const dotPosition = Animated.divide(scrollX, SIZES.width);
+
+    return (
+      <View style={styles.dotContainer}>
+        {dummyData.map((item, index) => {
+          const opacity = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [0.3, 1, 0.3],
+            extrapolate: 'clamp',
+          });
+
+          const dotSize = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [SIZES.base, 17, SIZES.base],
+            extrapolate: 'clamp',
+          });
+          return (
+            <DotView
+              key={`dot-${index}`}
+              style={[
+                styles.dot,
+                {width: dotSize, height: dotSize, opacity: opacity},
+              ]}
+            />
+          );
+        })}
+      </View>
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.container}>{renderContent()}</SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <View>{renderContent()}</View>
+      <View style={styles.dotsContainer}>{renderDots()}</View>
+    </SafeAreaView>
   );
 };
 
@@ -89,7 +139,7 @@ const styles = StyleSheet.create({
   },
   containerTitleDescription: {
     position: 'absolute',
-    bottom: '3%',
+    bottom: '10%',
     left: 40,
     right: 40,
   },
@@ -103,6 +153,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: SIZES.base,
     color: COLORS.gray,
+  },
+  dot: {
+    borderRadius: SIZES.radius,
+    backgroundColor: COLORS.blue,
+    marginHorizontal: SIZES.radius / 2,
+  },
+  dotContainer: {
+    flexDirection: 'row',
+    height: SIZES.padding,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dotsContainer: {
+    position: 'absolute',
+    bottom: SIZES.height > 700 ? '30%' : '20%',
   },
 });
 
